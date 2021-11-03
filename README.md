@@ -13,7 +13,7 @@ The [`isCustomElement` compiler option](https://v3.vuejs.org/api/application-con
 
 Although it is possible to add `compilerOptions` to the `vue-jest` object in the `globals` section of Jest's config [which get passed to the template compiler](https://github.com/vuejs/vue-jest/blob/v27.0.0-alpha.1/packages/vue3-jest/lib/process.js#L103), this does not work properly for the `isCustomElement` function when running all test spec files at once. Even though the `isCustomElement` function was defined in Jest's config file (see extract below), Vue prints warnings to the console output that it failed to resolve a custom element component.
 
-`globals` object from `jest.config.js`
+`globals` object from `jest.config.js`:
 
 ```
 globals: {
@@ -37,11 +37,11 @@ Run `npm run test:counter` (or `npx jest --no-cache src/components/Counter.spec.
 
 Even though it is not allowed to include functions in the `globals` config object according to [Jest's documentation](https://jestjs.io/docs/configuration#globals-object), Jest will properly pick up the configured `compilerOptions.isCustomElement` function from the `jest.config.js` file when running a single test spec file. In this case no warning is printed by Vue that it failed to resolve the custom element component.
 
-#### 2. Running all test spec files at once
+#### 2. Running all test spec files at once (**in parallel**)
 
 Run `npm run test:all` (or `npx jest --no-cache`) to run all test spec files _in bulk_.
 
-Running all tests at once will result in warnings that Vue cannot resolve the custom element component.
+Running all tests at once in parallel will result in warnings that Vue cannot resolve the custom element component.
 
 Console output:
 
@@ -64,7 +64,13 @@ console.warn
   at callWithErrorHandling (node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6597:36)
 ```
 
-#### 3. Running all test spec files at once with `--silent` option
+#### 3. Running all test spec files at once (**in sequence** using jest's `--runInBand` flag)
+
+Run `npm run test:all-in-band` (or `npx jest --runInBand --no-cache`) to run all test spec files sequentially.
+
+Running all tests at once but sequentially will run the tests as expected without any "Failed to resolve component" warnings in the console.
+
+#### 4. Running all test spec files at once with `--silent` option
 
 Run `npm run test:all-silent` (or `npx jest --no-cache --silent`) to run all test spec files with Jest's `--silent` option.
 

@@ -7,6 +7,7 @@
     "serve": "vite preview",
     "test:counter": "jest --no-cache src/components/Counter.spec.ts",
     "test:all": "jest --no-cache",
+    "test:all-in-band": "jest --runInBand --no-cache",
     "test:all-silent": "jest --no-cache --silent"
   },
   "dependencies": {
